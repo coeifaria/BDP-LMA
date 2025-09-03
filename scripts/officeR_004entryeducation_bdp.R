@@ -11,17 +11,6 @@ statewide_analysis_paragraph_0_1 <- paste0("This section presents a statewide ov
                                            )
 statewide_analysis_paragraph_0_2 <- " focusing on the following key areas: entry-level education requirements, desired licenses and certifications, work experience expectations, salary differentials by education level, and long-term job projections. "
 
-#statewide_analysis_paragraph_0 <- list(ftext("This section presents a statewide overview of the occupations: ", body_text_style)) %>%
-#  append(soc_titles_formatted) %>%
-#  append(
-#      list(
-#        ftext(statewide_analysis_paragraph_0_2, body_text_style),
-#        fp_p = fp_par(text.align = "justify")
-#          )
-#        )
-
-#statewide_analysis_paragraph <- do.call(fpar, statewide_analysis_paragraph_0)
-
 statewide_analysis_paragraph <- format_paragraph(statewide_analysis_paragraph_0_1, statewide_analysis_paragraph_0_2)
 
 summary_1_table_func <- function() {
@@ -88,7 +77,8 @@ entry_level_education_requirements_paragraph <-
 
 
 
-doc4 <- read_docx("bdp_template.docx") %>%
+#doc4 <- read_docx("bdp_template.docx") %>%
+doc4 <- read_docx() %>%
   body_add_fpar(fpar(ftext("Statewide Analysis", H1), fp_p = fp_par(text.align = "left"))) %>%
   body_add_par("") %>%
   body_add_fpar(statewide_analysis_paragraph) %>%

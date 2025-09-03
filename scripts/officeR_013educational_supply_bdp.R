@@ -24,7 +24,8 @@ educational_supply_paragraph_2_02 <- paste0(
 
 educational_supply_paragraph_2 <- format_paragraph(educational_supply_paragraph_2_01, educational_supply_paragraph_2_02)
 
-doc13 <- read_docx("bdp_template.docx") %>%
+#doc13 <- read_docx("bdp_template.docx") %>%
+doc13 <- read_docx() %>%
   body_add_fpar(fpar(ftext("Educational Supply", H2), fp_p = fp_par(text.align = "left"))) %>%
   body_add_fpar(fpar(ftext(educational_supply_paragraph_1, body_text_style), fp_p = fp_par(text.align = "justify"))) %>%
   body_add_par("") %>%

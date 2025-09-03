@@ -35,6 +35,11 @@ weighted_avg_salary_column_func <- function(tab_x, column, nrow_length){
   output <- sum((ads/sum(ads))*value[1:v_length])
   return(output)
 }
+#t1 <- read_excel(advertised_salaries_files[3], sheet = "Job Postings Occ Table")
+
+#weighted_avg_salary_column_func(t1,
+#                                "Pct. 25 Hourly",
+#                                nrow(t1[!is.na(t1$SOC),])) %>% round() %>% format_num_func("$W", F, F)
 
 advertised_salary_func <- function(table_num = T){
 for (file in advertised_salaries_files){

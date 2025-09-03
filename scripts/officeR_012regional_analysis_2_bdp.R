@@ -29,7 +29,8 @@ regional_analysis_paragraph_3_02 <- paste0(
 
 regional_analysis_paragraph_3 <- format_paragraph(regional_analysis_paragraph_3_01, regional_analysis_paragraph_3_02)
 
-doc12 <- read_docx("bdp_template.docx") %>%
+#doc12 <- read_docx("bdp_template.docx") %>%
+doc12 <- read_docx() %>%
   body_add_fpar(regional_analysis_paragraph_3) %>%
   body_add_par("") %>%
   body_add_fpar(

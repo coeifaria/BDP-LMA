@@ -22,9 +22,16 @@ intro_pargraph_1 <- paste0(
   " is designed for students planning to become California licensed respiratory care practitioners and registered respiratory therapists. Completion of the requirements also allows students to apply for all state and national advanced specialty credentialing examinations. Students will acquire the skills to provide a wide range of high technology and high-touch therapeutic interventions to patients in acute and chronic care settings.  Competencies are assessed through the use of classroom, laboratory, and clinical performance evaluations in simulated and actual patient care situations. Program success is determined through examining  attrition rates, employment rates, and licensure exam pass rates.  The degree and certificate in respiratory care are awarded after successful completion of the advanced registry-level respiratory care program.
 
   ",
-  pull(CIPCode2020[(CIPCode2020$CIPCode %in% CIP_pull),], CIPDefinition)
+  pull(CIPCode2020[(CIPCode2020$CIPCode %in% CIP_string),], CIPDefinition)
 )
 
+#pull(CIPCode2020[(CIPCode2020$CIPCode %in% CIP_string),], CIPDefinition)
+
+#CIP_string <- TOP_CIP_SOC_Current_original[,c(code_column_func("CIP"), code_column_func("SOC"))] %>%
+#  filter((`2018 SOC Code` %in% random_soc_gen_f(5))) %>%
+#  pull(1)
+
+#soc_2digit_titles_func(CIP_string)
 #CIP_pull <- CIP_string
 #CIP_pull <- '01.0000'
 #pull(CIPCode2020[(CIPCode2020$CIPCode %in% CIP_pull),], CIPTitle)
@@ -32,7 +39,8 @@ intro_pargraph_1 <- paste0(
 
 
 
-doc2 <- read_docx("bdp_template.docx") %>%
+#doc2 <- read_docx("bdp_template.docx") %>%
+doc2 <- read_docx() %>%
   body_add_fpar(fpar(ftext("Introduction", H1), fp_p = fp_par(text.align = "left"))) %>% # This line is where the error occurs
   body_add_par("", style = "Normal") %>%
   body_add_fpar(fpar(ftext(intro_pargraph_1, body_text_style), fp_p = fp_par(text.align = "justify"))) %>%

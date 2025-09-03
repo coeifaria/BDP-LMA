@@ -41,7 +41,8 @@ occupational_projections_paragraph_002 <- paste0(
 
 occupational_projections_paragraph <- format_paragraph(occupational_projections_paragraph_001, occupational_projections_paragraph_002)
 
-doc9 <- read_docx("bdp_template.docx") %>%
+#doc9 <- read_docx("bdp_template.docx") %>%
+doc9 <- read_docx() %>%
   body_add_fpar(fpar(ftext("10-Year Occupational Projections", H2), fp_p = fp_par(text.align = "left"))) %>%
   body_add_par("") %>%
   body_add_fpar(occupational_projections_paragraph) %>%

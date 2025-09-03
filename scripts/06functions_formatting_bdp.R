@@ -237,6 +237,7 @@ format_jobs_related_occ <- list(
     )
 
 
+
 ### Main officeR function
 ###
 format_paragraph <- function(paragraph1, paragraph2, jobs_related_or_specific=format_jobs_related_occ) {

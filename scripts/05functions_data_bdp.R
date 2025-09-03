@@ -132,7 +132,7 @@ digit_adder_onet <- function(digits) {
 
 exhibit_doc_func <- function(exhibit_ft) {
   number <- str_pad(str_extract(deparse(substitute(exhibit_ft)), "\\d+"), side = "left", width = 2, pad = "0")
-  document <- read_docx("lma_blank_template.docx") %>%
+  document <- read_docx("bdp_template.docx") %>%
     body_add_flextable(exhibit_ft)
   #return(assign(paste0("exhibit_doc", number), document, envir = .GlobalEnv))
   return(print(document, paste0("exhibit_0", number, ".docx")))
@@ -213,6 +213,7 @@ random_soc_gen_f <- function(n=1){
 test_demand_data <- function(socs){
   all_ca_data[all_ca_data$SOC%in%socs,] %>% demand_func() %>% not_in_selected_region() %>% remove_added_rows() %>% suppressMessages()
 }
+
 
 average_living_wage <- function(x, family_composition = "Adult", char=T) {
   if (x != "All") {

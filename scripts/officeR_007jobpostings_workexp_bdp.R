@@ -68,7 +68,8 @@ degree_alignment_paragraph_02 <- paste0(
 
 degree_alignment_paragraph <- format_paragraph(degree_alignment_paragraph_01, degree_alignment_paragraph_02, format_soc_titles(typical_entry_level_is_bachelors, T))
 
-doc7 <- read_docx("bdp_template.docx") %>%
+#doc7 <- read_docx("bdp_template.docx") %>%
+doc7 <- read_docx() %>%
   body_add_fpar(fpar(ftext("Entry-Level Work Experience", H2), fp_p = fp_par(text.align = "left"))) %>%
   body_add_par("") %>%
   body_add_fpar(job_postings_paragraph4) %>%
@@ -77,7 +78,9 @@ doc7 <- read_docx("bdp_template.docx") %>%
   body_add_par("") %>%
   body_add_fpar(
     fpar(
-      ftext(paste0("Exhibit 5: Requested Years of Experience by Number of Job Postings in California (nb=", jb_bachelor, ")"), H3),
+      ftext("Exhibit 5: Requested Years of Experience by Number of Job Postings in California (n", H3),
+      ftext("b", update(H3_italicized, vertical.align = "subscript")),
+      ftext(paste0("=", jb_bachelor, ")"), H3),
       fp_p = fp_par(text.align = "center")
     )
   ) %>%
@@ -87,8 +90,5 @@ doc7 <- read_docx("bdp_template.docx") %>%
   body_add_par("") %>%
   body_add_fpar(degree_alignment_paragraph) %>%
   body_add_par("")
-
-
-
 
 print(doc7, "officeR_007jobpostings_workexp.docx")

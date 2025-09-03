@@ -9,7 +9,8 @@ educational_supply_paragraph_3 <- paste0(
 )
 
 
-doc14 <- read_docx("bdp_template.docx") %>%
+#doc14 <- read_docx("bdp_template.docx") %>%
+doc14 <- read_docx() %>%
   body_add_fpar(fpar(ftext(educational_supply_paragraph_3, body_text_style), fp_p = fp_par(text.align = "justify"))) %>%
   body_add_par("") %>%
   body_add_fpar(

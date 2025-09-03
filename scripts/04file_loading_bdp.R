@@ -136,6 +136,21 @@ demand_func <- function(df) {
   return(df)
 }
 
+SOC_string <- SOC
+demand_func <- function(df, soc_filter=T) {
+
+  if(soc_filter){
+    df <- process_dataframe(df) %>% filter(SOC %in% SOC_string)
+  } else {
+    df <- process_dataframe(df)
+  }
+  df <- df %>%
+    mutate(
+      across(everything(), ~replace_na(., 0))
+    )
+  return(df)
+}
+
 #if(any(ncv_demand$SOC=="* Your selected institution is not in the selected region.", na.rm = T))
 
 not_in_selected_region <- function(data){
@@ -189,6 +204,30 @@ if (two_or_more_soc == 1){
   long_name_jobs_rule <- T
 } else {"error"}
 
+code_column_func <- function(code_type="SOC", name = F){
+
+  if(code_type=="SOC"){
+    code <- "\\d{2}\\-\\d{4}"
+  } else if (code_type=="TOP") {
+    code <- "\\d{4}\\.\\d{2}"
+  } else if (code_type=="CIP") {
+    code <- "\\d{2}\\.\\d{4}"
+  } else {
+    code <- code_type
+  }
+  code_column <- names(TOP_CIP_SOC_Current_original)[which(str_detect(TOP_CIP_SOC_Current_original[1,], code))]
+  if(length(code_column)==0 & name == F) {
+    print("Use SOC, TOP, or CIP")
+  }
+  if(name) {
+    #code_column <- names(TOP_CIP_SOC_Current_original)[which(names(TOP_CIP_SOC_Current_original) %in% code_column)+1]
+    code_column <- names(TOP_CIP_SOC_Current_original)[which(names(TOP_CIP_SOC_Current_original) %in% code_column)+1]
+    if(length(code_column)==0){
+      code_column <- names(TOP_CIP_SOC_Current_original)[which(str_detect(names(TOP_CIP_SOC_Current_original),code_type))]
+    }
+  }
+  return(code_column)
+}
 
 
 

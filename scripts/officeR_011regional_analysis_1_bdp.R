@@ -33,7 +33,8 @@ regional_analysis_paragraph_2_02 <- paste0(
 
 regional_analysis_paragraph_2 <- format_paragraph(regional_analysis_paragraph_2_01, regional_analysis_paragraph_2_02)
 
-doc11 <- read_docx("bdp_template.docx") %>%
+#doc11 <- read_docx("bdp_template.docx") %>%
+doc11 <- read_docx() %>%
   body_add_par("") %>%
   body_add_par("") %>%
   body_add_fpar(fpar(ftext("Regional Analysis", H1), fp_p = fp_par(text.align = "left"))) %>%

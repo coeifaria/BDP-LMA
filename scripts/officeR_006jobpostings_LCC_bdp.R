@@ -14,19 +14,25 @@ job_postings_paragraph4 <- paste0(
   ". Exhibit 4 shows the most requested qualifications, sorted by number of online job postings. "
 )
 
-doc6 <- read_docx("bdp_template.docx") %>%
+#doc6 <- read_docx("bdp_template.docx") %>%
+doc6 <- read_docx() %>%
   body_add_fpar(fpar(ftext("Licenses, Clearances, and Certifications", H2), fp_p = fp_par(text.align = "left"))) %>%
   body_add_par("") %>%
-  body_add_fpar(fpar(ftext(job_postings_paragraph4, body_text_style), fp_p = fp_par(text.align = "justify"))) %>%
+  body_add_fpar(
+    fpar(
+      ftext(job_postings_paragraph4, body_text_style),
+      fp_p = fp_par(text.align = "justify"))
+    ) %>%
   body_add_par("") %>%
-
   #  body_add_fpar(fpar(ftext("Entry-Level Education Requirements", H1), fp_p = fp_par(text.align = "justify"))) %>%
   #  body_add_par("") %>%
   #  body_add_fpar(fpar(ftext(entry_level_education_requirements_paragraph, body_text_style), fp_p = fp_par(text.align = "justify"))) %>%
   #  body_add_par("") %>%
   body_add_fpar(
     fpar(
-      ftext(paste0("Exhibit 4: Top Licenses, Clearances, or Certifications by Number of Job Postings in California (nb=",jb_all_formatted,")"), H3),
+      ftext("Exhibit 4: Top Licenses, Clearances, or Certifications by Number of Job Postings in California (n", H3),
+      ftext("min ed", update(H3_italicized, vertical.align = "subscript")),
+      ftext(paste0("=", jb_all_formatted, ")"), H3),
       fp_p = fp_par(text.align = "center")
     )
   ) %>%

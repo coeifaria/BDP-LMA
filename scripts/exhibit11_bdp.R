@@ -103,9 +103,9 @@ exhibit11_ft <- flextable(exhibit11_1) %>%
   vline(j = 4, border = fp_border(width = 3), part = "all") %>%
   hline_top(border = border_settings, part = "body") %>%
   hline_bottom(border = border_settings, part = "body") %>%
-
+  set_table_properties(layout = "autofit", width = 1) # Replaces autofit()
   # Autofit column widths
-  autofit()
+  #autofit()
 
 
 exhibit_doc_func(exhibit11_ft)

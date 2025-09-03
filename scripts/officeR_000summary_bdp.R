@@ -22,6 +22,7 @@ doc <- read_docx("bdp_intro_template.docx")
 
 # Add content to the top of the document
 doc <- doc %>%
+  #cursor_begin() %>%
   body_add_fpar(title_text) %>%
   body_add_par("") %>%
   body_add_par("") %>%
@@ -30,9 +31,18 @@ doc <- doc %>%
   body_add_par("") %>%
   body_add_par("") %>%
   body_add_par("") %>%
-  cursor_end() %>%
-  body_add_fpar(prepared_by3) %>%
-  body_add_fpar(prepared_by2, pos = "before") %>%
-  body_add_fpar(prepared_by1, pos = "before")
+  body_add_par("") %>%
+  body_add_par("") %>%
+  body_add_par("") %>%
+  body_add_par("") %>%
+  body_add_par("") %>%
+  body_add_fpar(prepared_by1) %>%
+  body_add_fpar(prepared_by2) %>%
+  body_add_fpar(prepared_by3)
+
+  #cursor_end()  %>%
+  #body_add_fpar(prepared_by3) %>%
+  #body_add_fpar(prepared_by2, pos = "before") %>%
+  #body_add_fpar(prepared_by1, pos = "before")
 
 print(doc, target = "officeR_000summary_bdp.docx")

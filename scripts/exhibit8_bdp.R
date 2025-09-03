@@ -143,9 +143,9 @@ exhibit_8_10_flex_func <- function(e8_10_2) {
     border_inner_h(border = border_settings, part = "body") %>%
     hline_top(border = border_settings, part = "body") %>%
     hline_bottom(border = border_settings, part = "body") %>%
-
+    set_table_properties(layout = "autofit", width = 1) # Replaces autofit()
     # Autofit column widths
-    autofit()
+    #autofit()
 
   return(e8_10_2_ft)
 }

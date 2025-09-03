@@ -103,7 +103,8 @@ wages_paragraph_1_00 <- format_paragraph("This report considers the entry-level 
 #wages_paragraph_2_02 <- format_paragraph(wages_paragraph_2_00,wages_paragraph_2_01)
 
 
-doc15 <- read_docx("bdp_template.docx") %>%
+#doc15 <- read_docx("bdp_template.docx") %>%
+doc15 <- read_docx() %>%
   body_add_fpar(fpar(ftext("Wages", H2), fp_p = fp_par(text.align = "left"))) %>%
   body_add_par("") %>%
   body_add_fpar(wages_paragraph_1_00) %>%

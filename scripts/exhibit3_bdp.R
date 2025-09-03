@@ -58,7 +58,8 @@ exhibit_345_func <- function(exhibit){
   bg(i = seq(1, nrow(exhibit), 2), bg = table_banding_odd, part = "body") %>%
   fontsize(i = nrow(exhibit), size = 12, part = "body") %>%
   font(i = nrow(exhibit), fontname = "Segoe UI", part = "body") %>%
-  autofit()
+  #autofit()
+  set_table_properties(layout = "autofit", width = 1) # Replaces autofit()
 return(exhibit_ft)
 }
 

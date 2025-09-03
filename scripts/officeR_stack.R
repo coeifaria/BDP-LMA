@@ -10,21 +10,50 @@ stack_these <- tibble(
 
 doc_sections <- pull(stack_these, files)
 doc_total <- read_docx("bdp_template.docx")
+
 for (doc in doc_sections){
-doc_total <- doc_total %>% body_add_docx(doc)
+  if(doc %in% doc_sections[1:2]) {
+    doc_total <- doc_total %>%
+      body_add_docx(doc) %>%
+      body_add_break()
+  } else {
+    doc_total <- doc_total %>%
+      body_add_docx(doc)
+  }
+  if(doc == last(doc_sections)) {
+  doc_total <- doc_total %>%
+    body_add_docx("bdp_appendix_template.docx") %>%
+    body_add_fpar(
+      fpar(ftext(text_date, body_text_style))
+    )
+  }
 }
 
-
-
-final_doc <- doc_total %>%
-  body_add_docx("bdp_appendix_template.docx") %>%
-  body_add_fpar(
-    fpar(
-    ftext(text_date, body_text_style)
-    )
-  )
-
+#doc_total <- read_docx("bdp_template.docx")
+#  body_add_docx("officeR_000summary_bdp.docx") %>%
+#  body_add_break() %>%
+#  body_add_docx("officeR_001keyfindings_bdp.docx") %>%
+#  body_add_break() %>%
+#  body_add_docx("officeR_002introduction.docx") %>%
+#  body_add_docx("officeR_003keyfindings_bdp.docx") %>%
+#  body_add_break() %>%
+#  body_add_docx("officeR_004entryeducation_bdp.docx") %>%
+#  body_add_docx(doc_sections[6]) %>%
+#  body_add_docx(doc_sections[7]) %>%
+#  body_add_docx(doc_sections[8]) %>%
+#  body_add_docx(doc_sections[9]) %>%
+#  body_add_docx(doc_sections[10]) %>%
+#  body_add_docx(doc_sections[11]) %>%
+#  body_add_docx(doc_sections[12]) %>%
+#  body_add_docx(doc_sections[13]) %>%
+#  body_add_docx(doc_sections[14]) %>%
+#  body_add_docx(doc_sections[15]) %>%
+#  body_add_docx(doc_sections[16]) %>%
+#  body_add_docx("bdp_appendix_template.docx") %>%
+#  body_add_fpar(
+#      fpar(ftext(text_date, body_text_style))
+#    )
 
 doc_title <- paste0("../",str_replace_all(paste(general_field, requesting_college, month(ymd(Sys.Date()), T,F), year(ymd(Sys.Date()))), " ", "_"), ".docx")
 
-print(final_doc, doc_title)
+print(doc_total, doc_title)

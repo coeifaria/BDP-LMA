@@ -43,7 +43,8 @@ occupational_projections_paragraph3_02 <- paste0(
 
 occupational_projections_paragraph3 <- format_paragraph(occupational_projections_paragraph3_01, occupational_projections_paragraph3_02)
 
-doc10 <- read_docx("bdp_template.docx") %>%
+#doc10 <- read_docx("bdp_template.docx") %>%
+doc10 <- read_docx() %>%
   body_add_par("") %>%
   body_add_fpar(occupational_projections_paragraph3) %>%
   body_add_par("") %>%
