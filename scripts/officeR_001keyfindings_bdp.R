@@ -55,7 +55,7 @@ d_b_1 <- fpar(
 )
 
 d_b_1 <- format_paragraph("Employment for ", paste0(" ", related_occupations_helper("report"), " ", d_b_1_2))
-d_b_1
+
 
 # see exhibit8_bdp.R
 d_b_2_1 <- paste0(
@@ -183,8 +183,7 @@ g_b_2 <- fpar(
 
 #### CONSTRUCT DOCUMENT
 
-#doc1 <- read_docx("bdp_template.docx") %>%
-doc1 <- read_docx() %>%
+doc1 <- read_docx("bdp_template.docx") %>%
   body_add_fpar(fpar(ftext(text_date, H0_1), fp_p = fp_par(text.align = "right"))) %>% # This line is where the error occurs
   body_add_par("", style = "Normal") %>%
   body_add_fpar(fpar(ftext("KEY FINDINGS", H1), fp_p = fp_par(text.align = "left"))) %>%
