@@ -48,6 +48,61 @@ if (length(xls_files) > 0 & length(xlsx_files)==0){
   print(".xlsx files present")
 }
 
+# --- Configuration ---
+repo_url <- "https://github.com/coeifaria/DemandFiles.git"
+new_dir <- "demand_file"
+branch <- "master"
+
+# --- Main Script ---
+
+# 1. Create the new directory if it doesn't already exist
+if (!dir.exists(new_dir)) {
+  dir.create(new_dir)
+}
+
+# Store the original working directory to return to it later
+original_wd <- getwd()
+setwd(new_dir)
+
+# --- Execute Git Commands ---
+# We wrap each command in a function for clarity and error checking
+
+run_command <- function(command, args) {
+  cat(paste("Running:", command, paste(args, collapse = " "), "\n"))
+  result <- system2(command, args = args, stdout = TRUE, stderr = TRUE)
+  if (any(grepl("error|fatal", result, ignore.case = TRUE))) {
+    stop(paste("Error executing command:", command, "\n", paste(result, collapse = "\n")))
+  }
+}
+
+tryCatch({
+  # 2. Initialize an empty Git repository
+  run_command("git", "init")
+
+  # 3. Link to the remote repository
+  run_command("git", c("remote", "add", "origin", repo_url))
+
+  # 4. Enable sparse checkout
+  run_command("git", c("config", "core.sparseCheckout", "true"))
+
+  # 5. Specify which files you want (using R's writeLines is best)
+  cat("Creating sparse-checkout file...\n")
+  writeLines("*.rds", con = ".git/info/sparse-checkout")
+
+  # 6. Pull the specified files from the repository
+  run_command("git", c("pull", "origin", branch))
+
+  cat("\nSuccess! Only .rds files have been pulled into the directory:", getwd(), "\n")
+
+}, error = function(e) {
+  cat(e$message, "\n")
+}, finally = {
+  # 7. Return to the original working directory
+  setwd(original_wd)
+  cat("Returned to original directory:", getwd(), "\n")
+})
+
+
 demand_hires <- list.files(
   path = file_path,  # Assuming the files are in a "data" folder
   pattern = "^Occupation.*?(CVML|California).*\\.xlsx$",
@@ -179,12 +234,68 @@ format_perc_func <- function(x, p=F){
 
 CIPCode2020 <- read_csv("CIPCode2020.csv") #%>% mutate(CIPCode = str_pad(CIPCode, side = "right", width = 8, pad = "0"))
 
-cvml_demand <- read_excel(demand_hires[str_detect(demand_hires, pattern = "CVML")], sheet = "Occs") %>% demand_func() %>% not_in_selected_region() %>% remove_added_rows() %>% suppressMessages()
-cvml_demand <- cvml_demand[cvml_demand$SOC %in% SOC,]
-ca_demand <- read_excel(demand_hires[str_detect(demand_hires, pattern = "California")], sheet = "Occs") %>% demand_func() %>% not_in_selected_region() %>% remove_added_rows() %>% suppressMessages()
-ca_demand <- ca_demand[ca_demand$SOC %in% SOC,]
+demand_files_names <- list.files(path = "demand_file")
+demand_files_names_p1 <- str_remove_all(demand_files_names, "demand_files_|\\.rds")
+value_n <- vector("numeric")
+year_pattern <- "\\d{4}"
 
-all_ca_data <- read_excel("Occupation_Table_All_Occupations_in_California_081825.xlsx", sheet = "Occs") %>% suppressMessages()
+for(files in demand_files_names_p1){
+  year_n <- as.numeric(str_extract(files, year_pattern))
+  month_n <- str_remove(files, year_pattern)
+  value_ni <- year_n+as.numeric(which(month.name==month_n))/100
+  value_n <- c(value_n, value_ni)
+}
+
+demand_file_latest <- demand_files_names[which.max(value_n)]
+demand_file_list <- readRDS(paste0("demand_file/", demand_file_latest))
+
+all_demand_regions <- c("NCV", "SCV", "CVML", "California")
+date_in_file <- str_remove(demand_file_list[["version"]][["overall"]][1], "\\s")
+month_in_file <- str_remove_all(date_in_file, pattern = year_pattern)
+
+month_ood <- month(Sys.Date())==match(month_in_file, month.name)
+year_ood <- year(Sys.Date())==str_extract(date_in_file, year_pattern)
+year_ood_print <- paste0("WARNING! DEMAND FILES ARE ",
+                         year(Sys.Date())-as.numeric(str_extract(date_in_file, year_pattern)),
+                         " YEAR OUT OF DATE!")
+month_ood_print <- paste0("WARNING! DEMAND FILES ARE ",
+                          month(Sys.Date())-as.numeric(match(month_in_file, month.name)),
+                          " MONTHS OUT OF DATE!")
+if(month_ood&year_ood) {
+  print("Demand files are good")
+} else {
+  if(!month_ood)
+    print(month_ood_print)
+  if(!year_ood)
+    print(year_ood_print)
+}
+
+demand_ood <- function(ood){
+
+  if(!month_ood) {
+    print(month_ood_print)
+  }
+  if(!year_ood) {
+    print(year_ood_print)
+  }
+}
+#demand_file_list[["cvml"]] %>% filter(SOC %in% "17-3029") %>%
+#all_demand_file <- T
+#if(all_demand_file){
+
+#ncv_demand <- demand_file_list[["n"]] %>% filter(SOC %in% SOC_string)
+#scv_demand <- demand_file_list[["s"]] %>% filter(SOC %in% SOC_string)
+all_ca_data <- demand_file_list[["ca"]] %>% suppressMessages()
+cvml_demand<- demand_file_list[["cvml"]] %>% filter(SOC %in% SOC_string)
+ca_demand <-  all_ca_data %>% filter(SOC %in% SOC_string)
+
+#cvml_demand <- read_excel(demand_hires[str_detect(demand_hires, pattern = "CVML")], sheet = "Occs") %>% demand_func() %>% not_in_selected_region() %>% remove_added_rows() %>% suppressMessages()
+#cvml_demand <- cvml_demand[cvml_demand$SOC %in% SOC,]
+
+#ca_demand <- read_excel(demand_hires[str_detect(demand_hires, pattern = "California")], sheet = "Occs") %>% demand_func() %>% not_in_selected_region() %>% remove_added_rows() %>% suppressMessages()
+#ca_demand <- ca_demand[ca_demand$SOC %in% SOC,]
+
+
 
 soc_code_titles_df <- pull(ca_demand, Description)[!is.na(pull(ca_demand, SOC))]
 soc_title <- pull(ca_demand, Description)[!is.na(pull(ca_demand, SOC))]
