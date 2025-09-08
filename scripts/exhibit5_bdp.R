@@ -2,15 +2,20 @@
 
 bp_jp_min_exp_required <-  jp_func(bp_job_postings, "Experience Breakdown")
 
-ex5 <- bp_jp_min_exp_required %>%
+ex5_0 <- bp_jp_min_exp_required %>%
   rename(`Years of Experience` = `Minimum Experience`, `Job Postings` = `Unique Postings`, `Percentage of Job Postings` = `% of Total`) %>%
-  mutate(`Percentage of Job Postings` = paste0(round(`Percentage of Job Postings`, 2)*100, "%")) %>%
+  mutate(`Percentage of Job Postings` = paste0(round(`Percentage of Job Postings`, 2)*100, "%"))
+
+
+ex5 <- ex5_0 %>%
   slice(-1)
 
 e_5_ft <- exhibit_345_func(ex5)
 exhibit_doc_func(e_5_ft)
 
-jb_bachelor <- pull(jb_all_count[str_detect(jb_all_count$`Minimum Education Level`, "Bachelor"),], 2)
+#jb_bachelor <- pull(jb_all_count[str_detect(jb_all_count$`Minimum Education Level`, "Bachelor"),], 2)
+jb_bachelor <- sum(pull(ex5_0, `Job Postings`))
+
 
 ###### Document officeR_007jobpostings_workexp_bdp.R
 jp_ad_count_sheet <- jp_sheets == ("Job Postings Top Occs")

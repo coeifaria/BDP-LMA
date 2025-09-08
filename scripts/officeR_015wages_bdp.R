@@ -51,7 +51,8 @@ wages_paragraph_1 <- paste0(
   " in the CVML region and its comparison to the region’s living wages. "
   #"Note: there is insufficient data for Agricultural Engineers."
   )
-wages_t <-wage_compare_formatted_func(SOC)
+
+wages_t <- wage_compare_formatted_func(SOC)
 
 wages_paragraph_2_00 <- paste0(
   "Entry-level hourly wages for ",
@@ -80,8 +81,8 @@ wages_paragraph_2_01_3 <- paste0(". Exhibit 13 shows the wage range for ",
                                  #"Note: there is insufficient data for Agricultural Engineers."
 )
 wages_paragraph_2_01_2 <- paste0(wages_paragraph_2_01_2, wages_paragraph_2_01_3)
-wages_paragraph_2_01_11 <- format_paragraph(wages_paragraph_2_00, wages_paragraph_2_01_1, format_soc_titles(wages_t$Adult))
-wages_paragraph_2_02_11 <- format_paragraph(" and ", wages_paragraph_2_01_2, format_soc_titles(wages_t$Adult_Infant))
+wages_paragraph_2_01_11 <- format_sentence(wages_paragraph_2_00, wages_paragraph_2_01_1, format_soc_titles(wages_t$Adult))
+wages_paragraph_2_02_11 <- format_sentence(" and ", wages_paragraph_2_01_2, format_soc_titles(wages_t$Adult_Infant))
 
 
 wage_list_test <- wage_compare_formatted_func(SOC)
@@ -89,7 +90,7 @@ wage_list_test <- wage_compare_formatted_func(SOC)
 if(wage_list_test$Adult_count==wage_list_test$infant_count) {
   wages_paragraph_2_03_11 <- format_paragraph(wages_paragraph_2_00, wages_paragraph_2_01_2, format_soc_titles(wages_t$Adult))
 } else {
-  wages_paragraph_2_03_11 <- append(wages_paragraph_2_01_11, wages_paragraph_2_02_11)
+  wages_paragraph_2_03_11 <- format_sentence_to_paragraph(append(wages_paragraph_2_01_11, wages_paragraph_2_02_11))
 }
 
 

@@ -48,9 +48,9 @@ if(length(bachelor_degrees)==1){
 } else {
   bachelor_degrees_interval <-  paste0(
     "between ",
-    min(bachelor_degrees)*100,
+    min(bachelor_degrees, na.rm = T)*100,
     "% and ",
-    max(bachelor_degrees)*100,
+    max(bachelor_degrees, na.rm = T)*100,
     "%"
     )
 

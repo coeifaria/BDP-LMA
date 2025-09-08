@@ -49,6 +49,9 @@ H3_italicized <- fp_text(font.size = 13, color = H1_color, font.family = "Segoe 
 
 #H3 <- fp_text(font.size = 14, color = exhibit_header_color, font.family = "Segoe UI")
 S1 <- fp_text(font.size = 14, color = "#455F51", font.family = "Segoe UI")
+
+fp_footnote_style <- fp_text_lite(font.size = 8, font.family = "Montserrat")
+
 body_text_style <- fp_text(font.size = 12, font.family = "Segoe UI")
 body_text_style_bold <-fp_text(font.size = 12, font.family = "Segoe UI", bold = TRUE)
 body_text_style_italic <-fp_text(font.size = 12, font.family = "Segoe UI", italic = TRUE)

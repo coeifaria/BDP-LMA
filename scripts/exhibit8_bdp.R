@@ -5,6 +5,7 @@ op_date_range_max <- year_set_func() + 10
 
 # Custom formatting functions
 exhibit_8_10_func <- function(ca_or_cvml) {
+  #e8_10 <- f_job_growth(ca_demand) %>%
   e8_10 <- ca_or_cvml %>%
     mutate(region = NULL) %>%
     filter(

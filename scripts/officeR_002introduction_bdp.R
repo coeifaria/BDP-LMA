@@ -11,6 +11,7 @@ for (soc_code in soc_codes_00) {
   intro_description_and_job_titles[[soc_code]][["sample_titles"]] <- ONET_call$summary$occupation$sample_of_reported_job_titles
 }
 
+intro_description_and_job_titles
 #intro_pargraph_1 <- "The Applied Agricultural Science and Technology, , program proposed by Cerro Coso College is designed prepare students to integrate, install, operate, and maintain advanced technology systems in agricultural operations (e.g., food production, processing, and distribution businesses). Specific competencies include applications of IoT networks, precision agriculture, robotics, automation, and data analytics. Students learn to bridge traditional agricultural knowledge with emerging technology implementation, preparing them for careers as agricultural technology specialists, systems integrators, and field support technicians. The program emphasizes hands-on application, industry partnerships, and real-world problem-solving to meet the growing demand for technology-skilled professionals in California's agricultural sector. Graduates will be equipped to implement, troubleshoot, and optimize smart farming and agricultural industry systems that enhance productivity, sustainability, and profitability in diverse agricultural operations."
 intro_pargraph_1 <- paste0(
   "The " ,
@@ -21,8 +22,8 @@ intro_pargraph_1 <- paste0(
   requesting_college,
   " is designed for students planning to become California licensed respiratory care practitioners and registered respiratory therapists. Completion of the requirements also allows students to apply for all state and national advanced specialty credentialing examinations. Students will acquire the skills to provide a wide range of high technology and high-touch therapeutic interventions to patients in acute and chronic care settings.  Competencies are assessed through the use of classroom, laboratory, and clinical performance evaluations in simulated and actual patient care situations. Program success is determined through examining  attrition rates, employment rates, and licensure exam pass rates.  The degree and certificate in respiratory care are awarded after successful completion of the advanced registry-level respiratory care program.
 
-  ",
-  pull(CIPCode2020[(CIPCode2020$CIPCode %in% CIP_string),], CIPDefinition)
+  "
+  #pull(CIPCode2020[(CIPCode2020$CIPCode %in% CIP_string),], CIPDefinition)
 )
 
 #pull(CIPCode2020[(CIPCode2020$CIPCode %in% CIP_string),], CIPDefinition)
@@ -49,11 +50,11 @@ doc2 <- read_docx() %>%
 body_add_par("", style = "Normal")
 
 for (soc_code in SOC) {
-  job_title <- paste0(soc_code_titles_w_soc_code, ": ")
+  job_title <- paste0(soc_titles_f(soc_code), ": ")
   job_description <- fpar(
     ftext(job_title, body_text_style_bold),
     ftext(intro_description_and_job_titles[[digit_adder_onet(soc_code)]][["description"]], body_text_style),
-    ftext(".", body_text_style),
+    #ftext(".", body_text_style),
     fp_p = fp_par(text.align = "justify")
   )
   sample_title <- fpar(
@@ -64,6 +65,7 @@ for (soc_code in SOC) {
   )
 
 doc2 <- doc2 %>%
+  body_add_par("") %>%
   body_add_fpar(job_description) %>%
   body_add_par("") %>%
   body_add_fpar(sample_title)

@@ -29,13 +29,17 @@ regional_analysis_paragraph_3_02 <- paste0(
 
 regional_analysis_paragraph_3 <- format_paragraph(regional_analysis_paragraph_3_01, regional_analysis_paragraph_3_02)
 
-#doc12 <- read_docx("bdp_template.docx") %>%
-doc12 <- read_docx() %>%
+footnote_ex10 <- "10-year change represents new job additions to the workforce. Annual openings include new jobs and replacement jobs that result from retirements and separations."
+footnote_content_ex10 <- fpar(ftext(footnote_ex10, prop = fp_footnote_style))
+
+doc12 <- read_docx("bdp_template.docx") %>%
+##doc12 <- read_docx() %>%
   body_add_fpar(regional_analysis_paragraph_3) %>%
   body_add_par("") %>%
   body_add_fpar(
     fpar(
-      ftext("Exhibit 10: Occupational Demand in CVML region1", H3),
+      ftext("Exhibit 10: Occupational Demand in CVML region", H3),
+      run_footnote(x = block_list(footnote_content_ex10), prop = fp_text_lite(vertical.align = "superscript")),
       fp_p = fp_par(text.align = "center"))
   ) %>%
   body_add_flextable(exhibit10_ft)

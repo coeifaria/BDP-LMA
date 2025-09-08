@@ -453,7 +453,6 @@ names(CA2024_SSS) <- c("Counties", "tablenumber", "Adult", "Adult_Infant")
 
 cvml_counties <- c(ncv_counties, scv_counties)
 
-
 cvml_counties_string <- paste(cvml_counties, collapse = "|")
 
 text_date <- format(Sys.Date(), "%B %Y")

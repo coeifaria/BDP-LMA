@@ -24,6 +24,7 @@ format_num_func <- function(x, type = "%", parenthesis=F, paranthesis_for_negati
 
   return(final_offer)
 }
+format_num_func <- Vectorize(format_num_func)
 
 bachelor_range_f <- function(ranged, a=1){
   joiner <- c(" to ", " and ")[a]
@@ -252,4 +253,18 @@ format_paragraph <- function(paragraph1, paragraph2, jobs_related_or_specific=fo
   return(final_offer)
 }
 
+format_sentence <- function(line1, line2, jobs_related_or_specific=format_jobs_related_occ) {
+  selected_jobs_or_all <- jobs_related_or_specific
+  fpar_body <- list(ftext(line1, body_text_style)) %>%
+    append(selected_jobs_or_all) %>%
+    append(list(ftext(line2, body_text_style)))
+  return(fpar_body)
+}
 
+format_sentence_to_paragraph <- function(lines){
+
+  fp_p_list <- list(fp_p = fp_par(text.align = "justify"))
+  fpar_body <-append(lines, fp_p_list)
+  final_offer <- do.call(fpar, fpar_body)
+  return(final_offer)
+}

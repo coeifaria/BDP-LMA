@@ -51,7 +51,7 @@ doc8 <- read_docx() %>%
     fpar(
       ftext("Exhibit 6: Advertised Entry-Level Wage by Level of Experience (n", H3),
       ftext("ed", update(H3_italicized, vertical.align = "subscript")),
-      ftext(format_num_func(jp_ned, "#"), H3),
+      ftext(paste0(" = ",format_num_func(jp_ned, "#")), H3),
       fp_p = fp_par(text.align = "center")
     )
   ) %>%
