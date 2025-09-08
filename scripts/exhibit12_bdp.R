@@ -8,10 +8,15 @@ supply_years <- ncc_supply_cvml %>%
   pull(acadyr) %>%
   unique()
 
+if(length(supply_years) == 0) {
+  supply_years <- 2020:2022 %>% as.character()
+  supply_yearsb <- 21:23 %>% as.character()
+  supply_years <- paste0(supply_years, "-", supply_yearsb)
+}
+
 supply_years_min <- str_sub(supply_years,1, 4) %>% min()
 supply_years_max <- str_sub(supply_years,6, 7) %>% max()
 supply_years_max <- paste0("20",supply_years_max)
-
 
 ex12 <-   ncc_supply_cvml %>%
   pivot_longer(
@@ -26,9 +31,9 @@ ex12 <-   ncc_supply_cvml %>%
 
     CIPwithTitle = `CIP with Title`
   ) %>%
-  select(`Institution.Name`, CIPwithTitle, `Award Level`, acadyr, awards) %>%
+  select(`Institution.Name`, CIP, CIPwithTitle, `Award Level`, acadyr, awards) %>%
   #distinct() %>%
-  group_by(`Institution.Name`, CIPwithTitle, acadyr) %>%
+  group_by(`Institution.Name`, CIP, CIPwithTitle, acadyr) %>%
   summarize(awards = sum(awards, na.rm = TRUE), .groups = "drop") %>%
   pivot_wider(names_from = acadyr, values_from = awards)
 
@@ -47,7 +52,8 @@ if (nrow(ex12) == 0) {
   for (cip_code in seq_along(CIP)) {
     temp_row <- data.frame(
       `Institution.Name` = "-",
-      `CIPwithTitle` = cip_titles_v2[cip_code],
+      `CIP` = pull(cip_code_and_title,1)[cip_code],
+      `CIPwithTitle` = pull(cip_code_and_title,2)[cip_code],
       #`CIPwithTitle` = CIP_titles_code_supplementary[cip_code],
       awards_zero, # Assuming awards_zero is numeric and default is 0
       stringsAsFactors = FALSE
@@ -56,24 +62,26 @@ if (nrow(ex12) == 0) {
   }
 
   # Ensure 'award_columns' has the correct length
-  names(ex12)[5:(4 + length(award_columns))] <- award_columns
+  start_here <- length(names(ex12))-length(award_columns)
+  names(ex12)[1+start_here:(start_here+length(award_columns)-1)] <- award_columns
 }
 
 # Proceed with the rest of the code
 ex12_1 <- ex12 %>%
-  mutate(
-    `CIP Code` = str_split(CIPwithTitle, pattern = "-", simplify = TRUE)[,1],
-    Program = str_squish(str_split(CIPwithTitle, pattern = "-", simplify = TRUE)[,2]),
-    `CIP Code` = str_squish(sub("^(\\d{4})(\\d+)$", "\\1.\\2", `CIP Code`))
-  ) %>%
+  #mutate(
+    #`CIP Code` = str_split(CIPwithTitle, pattern = "-", simplify = TRUE)[,1],
+    #Program = str_squish(str_split(CIPwithTitle, pattern = "-", simplify = TRUE)[,2])#,
+    #`CIP Code` = str_squish(sub("^(\\d{4})(\\d+)$", "\\1.\\2", `CIP Code`))
+  #) %>%
   rename(Institution = `Institution.Name`) %>%
-  select(`CIP Code`, Program, Institution, starts_with("20")) %>%
+  select(CIP, CIPwithTitle, Institution, starts_with("20")) %>%
   rowwise() %>%
   mutate(`3-Year Award Average` = round(mean(c_across(starts_with("20")), na.rm = TRUE), 0)) %>%
   ungroup() %>%
   #mutate(`TOP Code` = paste0(str_sub(`TOP Code`, 1, 4), ".", str_sub(`TOP Code`, 5, 6))) %>%
-  filter(`CIP Code` %in% CIP) %>%
-  rename(Institution = Institution)
+  filter(`CIP` %in% CIP_string) %>%
+  rename(`CIP Code` = CIP, Program = CIPwithTitle)
+
 
 top_part_table <- ex12_1 %>%
   bind_rows(

@@ -105,7 +105,7 @@ exhibit_doc_func(exhibit6_ft)
 
 ###### Document officeR_008advertised_salary_bdp
 
-jp_ned <- sum(as.numeric(pull(advertised_salaries_table, 2)))
+jp_ned <- sum(as.numeric(str_remove(pull(advertised_salaries_table, 2), "\\,")))
 
 advertised_salaries_table_numbers <- advertised_salary_func(F)
 

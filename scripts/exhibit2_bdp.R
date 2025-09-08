@@ -121,7 +121,6 @@ exhibit2_4 <- exhibit2 %>%
 suppressMessages()
 
 
-
 bachelor_range <- pull(exhibit2_4, names(exhibit2_4)[str_detect(names(exhibit2_4), "Bachelor")]) %>% range() %>% unique()
 #bachelor_range_test <- c(.01, .23, .15, .45, .85, .22) %>% range()
 

@@ -341,7 +341,6 @@ code_column_func <- function(code_type="SOC", name = F){
 }
 
 
-
 demand_postings <- list.files(
   path = "../data",  # Assuming the files are in a "data" folder
   pattern = "^Job_Posting_Analytics.*\\.xlsx$",
@@ -412,10 +411,15 @@ EducationalAttainment_filtered <- EducationalAttainment %>%
 
 TOP_CIP_SOC_Current$`CIP Code` <- as.character(TOP_CIP_SOC_Current$`CIP Code`)
 TOP_CIP_SOC_Current_supplementary$`CIP Code` <- as.character(TOP_CIP_SOC_Current_supplementary$`CIP Code`)
-CIP_string <- unique(pull(TOP_CIP_SOC_Current_supplementary[TOP_CIP_SOC_Current_supplementary$`CIP Code`%in% CIP,], "CIP Code"))
-cip_titles_v2 <- pull(TOP_CIP_SOC_Current_supplementary[which(TOP_CIP_SOC_Current_supplementary$`CIP Code` %in% CIP_string),], "CIP Title") %>% unique()
-cip_codes_supplementary <- unique(TOP_CIP_SOC_Current_supplementary$`CIP Code`)
 
+
+code_column_func("CIP", T)
+
+CIP_string <- unique(pull(TOP_CIP_SOC_Current_original[TOP_CIP_SOC_Current_original[[code_column_func("CIP")]] %in% CIP,], code_column_func("CIP")))
+cip_titles_v2 <- unique(pull(TOP_CIP_SOC_Current_original[TOP_CIP_SOC_Current_original[[code_column_func("CIP")]] %in% CIP,], code_column_func("CIP", T)))
+
+cip_code_and_title <-distinct(TOP_CIP_SOC_Current_original[TOP_CIP_SOC_Current_original[[code_column_func("CIP")]] %in% CIP,c(code_column_func("CIP"), code_column_func("CIP",T))])
+cip_codes_supplementary <- unique(TOP_CIP_SOC_Current_supplementary$`CIP Code`)
 
 #CIP <- as.character(TOP_CIP_SOC_Current$`CIP Code`)
 cc_supply_raw <- read_excel(supply_file, sheet = "Data_Supply CC Only")
@@ -428,12 +432,13 @@ ncc_supply <- read_excel(supply_file, sheet = "Data_Other Ed Only") %>%
 ncc_supply_cvml <- ncc_supply %>%
   filter(Regions == "Central")
 
-ccc_supply <- read_excel(supply_file, sheet = "Data_Supply CC Only") %>%
+
+ccc_supply <- cc_supply_raw %>%
   filter(`TOP6 or CIP` %in% str_remove(str_split(params[["TOP_supplementary"]], ", ", simplify = F)[[1]], "\\.")) %>%
   filter(`Community College Flag` == "Community College")
 
 ccc_supply_cvml <- ccc_supply %>%
-  filter(Regions == "Central", `Community College Flag` == "Community College")
+  filter(Regions == "Central")
 
 CA2024_SSS <- readxl::read_excel("CA2024_SSS.xlsx",
                                  sheet = "SSW",

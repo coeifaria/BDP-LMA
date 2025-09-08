@@ -161,7 +161,6 @@ exhibit10 <- exhibit_8_10_func(f_job_growth(cvml_demand))
 exhibit8_ft <-  exhibit_8_10_flex_func(exhibit8)
 exhibit10_ft <- exhibit_8_10_flex_func(exhibit10)
 
-
 d1_num <- ca_job_growth %>%
   mutate(region = NULL) %>%
   filter(
@@ -202,3 +201,4 @@ d1_cvml_highest_growth_year <- pull(d1_num_2, Year)[d1_cvml_highest_growth_ind]
 
 d2_ca_annual_openings <- prettyNum(round(pull(d1_num, Annual_Openings)[1]), big.mark = ",")
 d2_cvml_annual_openings <- prettyNum(round(pull(d1_num_2_2, Annual_Openings)[1]), big.mark = ",")
+
